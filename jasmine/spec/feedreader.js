@@ -76,7 +76,7 @@ $(function() {
             expect($('body').attr('class')).toEqual('');
             $('.menu-icon-link').click();
             expect($('body').attr('class')).toEqual('menu-hidden');            
-        })
+        });
     });
 
     /* a new test suite named "Initial Entries" */
