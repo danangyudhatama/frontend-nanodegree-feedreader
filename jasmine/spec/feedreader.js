@@ -32,9 +32,10 @@ $(function() {
          * and that the URL is not empty.
          */
         it('has URL defined',function() {
-            len = allFeeds.length;
+            var len = allFeeds.length;
             for (var i = 0; i < len; i++) {
                 expect(allFeeds[i].url).toBeDefined();
+                expect(allFeeds[i].url).toBeTruthy();
             }
         });
 
@@ -62,7 +63,7 @@ $(function() {
          * hiding/showing of the menu element.
          */
         it('is hidden by default', function() {
-            expect($('body').attr('class')).toEqual('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
 
          /* a test that ensures the menu changes
@@ -73,9 +74,9 @@ $(function() {
         it('is toggled', function() {
             // var spyEvent = spyOnEvent('.menu-icon-link', 'click');
             $('.menu-icon-link').click();
-            expect($('body').attr('class')).toEqual('');
+            expect($('body').hasClass('menu-hidden')).toBeFalsy();
             $('.menu-icon-link').click();
-            expect($('body').attr('class')).toEqual('menu-hidden');            
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();            
         });
     });
 
@@ -88,14 +89,10 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          beforeEach(function(done) {
-            loadFeed(0,function() {
-                done();
-            });
+            loadFeed(0, done);
          });
-         it('has finished its work', function(done) {
-            expect($(".entry").length).toBeGreaterThan(0);
-            done();
-
+         it('has finished its work', function() {
+            expect($(".feed .entry").length).toBeGreaterThan(0);
          });
     });
         
@@ -107,15 +104,14 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        oldFeed = $(".feed").text();
+        
         beforeEach(function(done) {
             loadFeed(0,function() {
-                oldFeed = $(".feed").text();
+            newFeed = $(".feed").text();
                 done();
             });
-            loadFeed(1,function() {
-                newFeed = $(".feed").text();
-                done();
-            });
+
         });
         it('the content has changed', function () {
             expect(oldFeed).not.toEqual(newFeed);
