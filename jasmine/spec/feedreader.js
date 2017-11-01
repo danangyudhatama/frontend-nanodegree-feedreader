@@ -44,7 +44,7 @@ $(function() {
          * and that the name is not empty.
          */
         it('has name defined and not empty',function() {
-            len = allFeeds.length;
+            let len = allFeeds.length;
             for (var i = 0; i < len; i++) {
                 expect(allFeeds[i].name).toBeDefined();
                 expect(allFeeds[i].name).toBeTruthy();
@@ -105,13 +105,16 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
         oldFeed = $(".feed").text();
-        
+
         beforeEach(function(done) {
             loadFeed(0,function() {
-            newFeed = $(".feed").text();
-                done();
-            });
+                oldFeed = $(".feed").text();
+                loadFeed(1,function() {
+                    newFeed = $(".feed").text();
+                    done();
+                });
 
+            });
         });
         it('the content has changed', function () {
             expect(oldFeed).not.toEqual(newFeed);
